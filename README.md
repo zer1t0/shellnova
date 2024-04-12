@@ -1,13 +1,14 @@
 # shellnova
 
-A base project to create shellcodes from c code in an "easy" way.
+A base project to create GNU/Linux shellcodes from c code in an "easy" way.
 
 The project compiles a c binary that includes all the machine code and data
 into the .text section. Then the .text section its extracted to create a
 shellcode.
 
 A similar process is done in the more advanced
-[Stardust](https://github.com/Cracked5pider/Stardust) project.
+[Stardust](https://github.com/Cracked5pider/Stardust) project for generating
+Windows shellcode programs.
 
 Additionally, shellnova dynamically allows to search the libc functions so it
 can be accessed from the shellcode. It is possible to expand to search for
