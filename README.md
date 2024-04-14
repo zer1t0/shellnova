@@ -17,7 +17,7 @@ A similar process is done in the
 [Stardust](https://github.com/Cracked5pider/Stardust) project for generating
 Windows shellcode programs, from which was inspirated. You can check the
 following post of [C5pider](https://twitter.com/C5pider) to learn how it works:
- [Modern implant design: position independent malware development](https://5pider.net/blog/2024/01/27/modern-shellcode-implant-design/) by .
+ [Modern implant design: position independent malware development](https://5pider.net/blog/2024/01/27/modern-shellcode-implant-design/).
 
 ## Example
 
