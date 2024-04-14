@@ -8,6 +8,8 @@
 
 long syscall_z(long number, ...);
 
+pid_t getpid_z(void);
+
 ssize_t read_z(int fd, void *buf, size_t count);
 
 int open_z(const char *pathname, int flags, mode_t mode);

@@ -33,6 +33,9 @@ void *libc_search_func(char *name) {
         return func##_v;                                                \
     }
 
-IMPLEMENT_LIBC_FUNC_SEARCHER(malloc);
 IMPLEMENT_LIBC_FUNC_SEARCHER(free);
+IMPLEMENT_LIBC_FUNC_SEARCHER(getchar);
+IMPLEMENT_LIBC_FUNC_SEARCHER(malloc);
+IMPLEMENT_LIBC_FUNC_SEARCHER(mprotect);
+IMPLEMENT_LIBC_FUNC_SEARCHER(munmap);
 IMPLEMENT_LIBC_FUNC_SEARCHER(printf);

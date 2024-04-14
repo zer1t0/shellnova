@@ -3,6 +3,10 @@
 
 long syscall_z(long number, ...);
 
+pid_t getpid_z(void) {
+    return syscall_z(SYS_getpid);
+}
+
 ssize_t read_z(int fd, void *buf, size_t count) {
     return syscall_z(
         SYS_read,

@@ -6,13 +6,18 @@ The project compiles a c binary that includes all the machine code and data
 into the .text section. Then the .text section its extracted to create a
 shellcode.
 
-A similar process is done in the more advanced
-[Stardust](https://github.com/Cracked5pider/Stardust) project for generating
-Windows shellcode programs.
+Additionally, shellnova can use the libc functions since it looks for them
+dynamically. It is possible to expand this functionality to search for
+other libraries symbols if its required.
 
-Additionally, shellnova dynamically allows to search the libc functions so it
-can be accessed from the shellcode. It is possible to expand to search for
-other library symbols if you need.
+Whatever, this project should be considered a template that requires to be
+adapted for every situation.
+
+A similar process is done in the
+[Stardust](https://github.com/Cracked5pider/Stardust) project for generating
+Windows shellcode programs, from which was inspirated. You can check the
+following post of [C5pider](https://twitter.com/C5pider) to learn how it works:
+ [Modern implant design: position independent malware development](https://5pider.net/blog/2024/01/27/modern-shellcode-implant-design/) by .
 
 ## Example
 
@@ -25,22 +30,31 @@ utils/exec-shc shc.bin
 
 And it should print something like:
 ```
+[exec-shc] Shellcode start addr: 0x7a7250ad9000
+[exec-shc] Shellcode end addr: 0x7a7250ada06a
+PID: 16118
+Start addr: 0x7a7250ad9000
+Data addr: 0x7a7250ada000
+End addr: 0x7a7250ada06a
+Data size: 6a
 Hello world
-0x70e7876a50a0
-0x70e7876a53e0
 ```
 
 ## Relevant Parts
 
-- `src/linker.ld`: The linker script, which indicates that the data and code of
-the final binary is going to be stored in the .text section.
-
 - `src/main.c` is were your code goes.
+
+- `src/linker.ld`: The linker script, which indicates where the data and code of
+the final binary is going to be stored in the .text section.
 
 - `src/lib_d.c` file includes the code for searching a library symbols.
 
 - `src/libc_d.c` file includes the code for declaring libc symbols, it can
 be expanded to include new symbols.
+
+- `src/start.asm` and `src/start.c`: Execute the shellcode preamble before the
+main. You may need to modify these files in order to adapt the shellcode to
+your specific situation.
 
 ## Dependencies
 
@@ -50,3 +64,8 @@ sudo apt update
 sudo apt install -y gcc cmake make nasm python3-pip
 pip install -r scripts/requirements.txt
 ```
+
+
+## Credits
+
+-  [C5pider](https://twitter.com/C5pider)

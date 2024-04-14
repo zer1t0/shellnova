@@ -35,14 +35,14 @@ list(APPEND SRC_FILES
 
     src/print.h
 
+    src/start.asm
+    src/start.c
+    src/start.h
+
     src/syscall_z.asm
     src/syscall_z.c
     src/syscall_z.h
 )
-
-if(FORMAT_SHELLCODE)
-  list(APPEND SRC_FILES src/start.asm)
-endif()
 
 add_executable(shellnova ${SRC_FILES})
 

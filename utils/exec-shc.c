@@ -43,6 +43,8 @@ int main(int argc, char** argv) {
   executable_region = mmap(NULL, size, PROT_EXEC | PROT_READ | PROT_WRITE,
                            MAP_PRIVATE | MAP_ANONYMOUS, 0, 0);
 
+  printf("[exec-shc] Shellcode start addr: %p\n", executable_region);
+  printf("[exec-shc] Shellcode end addr: %p\n", (executable_region + size));
   memcpy(executable_region, shc, size);
   free(shc);
 
