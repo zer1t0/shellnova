@@ -35,19 +35,16 @@ You can test the shellcode with the `utils/exec-shc` program:
 ```
 cd shellnova/
 make
-utils/exec-shc shc.bin
+./utils/exec-shc/exec-shc shc.bin
 ```
 
 And it should print something like:
 ```
-[exec-shc] Shellcode start addr: 0x7a7250ad9000
-[exec-shc] Shellcode end addr: 0x7a7250ada06a
-PID: 16118
-Start addr: 0x7a7250ad9000
-Data addr: 0x7a7250ada000
-End addr: 0x7a7250ada06a
-Data size: 6a
-Hello world
+[exec-shc] PID: 6734
+[exec-shc] Shellcode start addr: 0x7d65a4038000
+[exec-shc] Shellcode end addr: 0x7d65a403a10a
+Hello from shellnova
+[exec-shc] Shellcode unmaped
 ```
 
 ## Relevant Parts
