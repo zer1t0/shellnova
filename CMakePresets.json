@@ -31,6 +31,19 @@
         "cacheVariables": {
             "FORMAT_SHELLCODE": "ON"
         }
+    }, {
+        "name": "x64-shellcode-log-stdout",
+        "inherits": "x64-shellcode",
+        "cacheVariables": {
+            "ENABLE_LOG": "ON"
+        }
+    }, {
+        "name": "x64-shellcode-log-file",
+        "inherits": "x64-shellcode",
+        "cacheVariables": {
+            "ENABLE_LOG": "ON",
+            "LOG_FILE": "/tmp/shc.log"
+        }
     }
     ]
 }

@@ -3,9 +3,8 @@
 
 long syscall_z(long number, ...);
 
-pid_t getpid_z(void) {
-    return syscall_z(SYS_getpid);
-}
+pid_t getpid_z(void) { return syscall_z(SYS_getpid); }
+pid_t gettid_z(void) { return syscall_z(SYS_gettid); }
 
 ssize_t read_z(int fd, void *buf, size_t count) {
     return syscall_z(
@@ -25,8 +24,27 @@ int open_z(const char *pathname, int flags, mode_t mode) {
         );
 }
 
+int openat_z(
+    int dirfd,
+    const char *pathname,
+    int flags,
+    mode_t mode
+    ) {
+    return syscall_z(
+        SYS_openat,
+        (long)dirfd,
+        (long)pathname,
+        (long)flags,
+        (long)mode
+   );
+}
+
 int close_z(int fd) {
     return syscall_z(SYS_close, (long)fd);
+}
+
+int mkdir_z(const char *pathname, mode_t mode) {
+    return syscall_z(SYS_mkdir, (long)pathname, (long) mode);
 }
 
 off_t lseek_z(int fd, off_t offset, int whence) {

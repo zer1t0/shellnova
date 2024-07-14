@@ -4,6 +4,10 @@ project(shellnova C ASM_NASM)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall")
 
+option(ENABLE_LOG "Enable logging")
+
+configure_file("src/build.h.in" "build.h")
+
 if(FORMAT_SHELLCODE)
 
 ## Set our custom linker script
@@ -33,6 +37,8 @@ list(APPEND SRC_FILES
 
     src/linker.h
 
+    src/log.h
+
     src/print.h
 
     src/start.asm
@@ -44,7 +50,14 @@ list(APPEND SRC_FILES
     src/syscall_z.h
 )
 
+if(ENABLE_LOG)
+  list(APPEND SRC_FILES src/log.c)
+endif()
+
+
 add_executable(shellnova ${SRC_FILES})
+
+target_include_directories(shellnova PUBLIC "${CMAKE_CURRENT_BINARY_DIR}")
 
 if(FORMAT_SHELLCODE)
   add_custom_target(

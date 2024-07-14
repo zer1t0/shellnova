@@ -1,5 +1,6 @@
 #include "lib_d.h"
 #include "basic_z.h"
+#include "log.h"
 #include "print.h"
 #include "syscall_z.h"
 #include <elf.h>
@@ -61,12 +62,17 @@ static int search_lib_address_and_path(
     }
 
     while(1) {
+        // LESSON: It can read less data than the maximum
         read_count = read_z(fd, buff, sizeof(buff) - 1);
         if(read_count < 0){
             PRINTF("Error reading maps: %ld\n", read_count);
             goto close;
         }
+        if(read_count == 0) {
+            goto close;
+        }
         buff[read_count] = 0;
+        LOG_WRITE("Reading maps line\n");
         // PRINTF("Read(%ld): %s\n\n", read_count, buff);
 
         ssize_t i;
@@ -78,6 +84,9 @@ static int search_lib_address_and_path(
 
             buff[i] = 0;
             // PRINTF("i: %ld\n", i);
+            PRINTF("%s\n", buff + startline_i);
+            LOG_WRITE(buff + startline_i);
+            LOG_WRITE("\n");
             if (line_contains_lib(
                     buff + startline_i,
                     lib_name_patterns,
@@ -92,14 +101,10 @@ static int search_lib_address_and_path(
             }
         }
 
-        // There is no more data for reading
-        if(read_count < (sizeof(buff) - 1)){
-            goto close;
-        }
-
         if(lseek_z(fd, startline_i - i, SEEK_CUR) < 0){
-            PRINTF("Error in lseek\n");
-            goto close;
+          LOG_WRITE("Error in lseek\n");
+          PRINTF("Error in lseek\n");
+          goto close;
         }
     }
 
@@ -239,9 +244,14 @@ int lib_search_symbols_tables(
             lib_path,
             &base_address
             )) {
-        PRINTF("Unable to find libc path\n");
+        PRINTF("Unable to find library path\n");
+        LOG_WRITE("Unable to find library path\n");
         return -1;
     }
+    LOG_WRITE("Found lib path: ");
+    LOG_WRITE(lib_path);
+    LOG_WRITE("\n");
+
     PRINTF("Library path: %s\n", lib_path);
     PRINTF("Base address: %p\n", base_address);
 
@@ -252,8 +262,10 @@ int lib_search_symbols_tables(
            &symbolstrt_vaddr
            )) {
         PRINTF("Error searching symbol table\n");
+        LOG_WRITE("Error searching symbol table");
         return -1;
     }
+    LOG_WRITE("Found symbols table\n");
 
     PRINTF("symbol table vaddr: %ld\n", symbolt_vaddr);
     PRINTF("symbol count: %ld\n", symbolt_count);
@@ -294,8 +306,13 @@ int lib_search_symbol_value(
 
 void* lib_search_function(libsyms_t *lib_symbols, char* name) {
     Elf64_Word func_vaddr;
+    LOG_WRITE("Lib search function init\n");
     if(lib_search_symbol_value(lib_symbols, name, STT_FUNC, &func_vaddr)) {
+      if (lib_search_symbol_value(lib_symbols, name, STT_GNU_IFUNC,
+                                  &func_vaddr)) {
         return NULL;
+      }
     }
+
     return lib_symbols->base_address + func_vaddr;
 }

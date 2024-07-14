@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/mman.h>
+#include <unistd.h>
 
 unsigned char *read_file_into_bytes(char *filepath, size_t* size) {
   FILE *fp;
@@ -43,6 +44,7 @@ int main(int argc, char** argv) {
   executable_region = mmap(NULL, size, PROT_EXEC | PROT_READ | PROT_WRITE,
                            MAP_PRIVATE | MAP_ANONYMOUS, 0, 0);
 
+  printf("[exec-shc] PID: %d\n", getpid());
   printf("[exec-shc] Shellcode start addr: %p\n", executable_region);
   printf("[exec-shc] Shellcode end addr: %p\n", (executable_region + size));
   memcpy(executable_region, shc, size);
@@ -50,7 +52,11 @@ int main(int argc, char** argv) {
 
   ((int (*)())executable_region)();
 
-  munmap(executable_region, size);
+  if(munmap(executable_region, size)) {
+      perror("[exec-shc] Error in munmap");
+  }else {
+      printf("[exec-shc] Shellcode unmaped\n");
+  }
 
   return 0;
 }

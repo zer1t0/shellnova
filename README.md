@@ -15,9 +15,19 @@ adapted for every situation.
 
 A similar process is done in the
 [Stardust](https://github.com/Cracked5pider/Stardust) project for generating
-Windows shellcode programs, from which was inspirated. You can check the
+Windows shellcode programs, from which was inspired. You can check the
 following post of [C5pider](https://twitter.com/C5pider) to learn how it works:
  [Modern implant design: position independent malware development](https://5pider.net/blog/2024/01/27/modern-shellcode-implant-design/).
+
+## Functionality
+
+When the shellnova shellcode its executed the following steps will be follow:
+
+1. Resolve libc
+2. Modify permissions to have an read-execute section for the code and a
+   read-write section for the data.
+3. Execute main
+4. Unmap shellcode memory sections
 
 ## Example
 
